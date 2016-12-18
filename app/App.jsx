@@ -2,30 +2,35 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateHero } from '../actions'
 
-const App= ({title, hero, onTextChanged}) => {
+const App= ({title, selectedHero,heroes,  onTextChanged}) => {
+  let heroItems = heroes.map((h) => {
+    return(<li key={h.id}>
+      <span className ="badge">{h.id}</span>{h.name}
+    </li>);
+  });
+  
   return (  
-  <div>
-    <h1>{title}</h1>
-    <h2>{hero.name} details!</h2>
-    <div><label>id: {hero.id}</label></div>
-    <div>
-    <label>name: </label>
-    <input type="text" value={hero.name} onChange={onTextChanged} />
-    </div>
-    </div>
-    );
+      <div>
+      <h2>My Heroes</h2>
+      <ul className="heroes">
+        {heroItems}
+      </ul>
+      </div>
+      );
 };
 
 App.propTypes = {
   title: PropTypes.string.isRequired,
-  hero: PropTypes.object.isRequired,
+  selectedHero: PropTypes.object.isRequired,
+  heroes: PropTypes.array.isRequired,
   onTextChanged: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    hero: state.hero,
-    title: state.title
+    selectedHero: state.selectedHero,
+    title: state.title,
+    heroes: state.heroes
   };
 }
 

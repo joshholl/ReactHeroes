@@ -1,11 +1,12 @@
 var path = require('path');
 var webpack= require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: path.resolve(__dirname, './app/index.html'),
   filename: 'index.html',
-  inject:'body'
+  inject:'body',
 });
 
 
@@ -15,7 +16,7 @@ module.exports = {
     path: 'dist',
     filename: 'index_bundle.js'
   },
-  plugins: [HtmlWebpackPluginConfig],
+  plugins: [HtmlWebpackPluginConfig, new ExtractTextPlugin("style.css")],
   devtool: 'source-map',
   module: {
     loaders: [
@@ -31,12 +32,20 @@ module.exports = {
       query: {
         presets: ['react']
       } 
-    }
+    },
+    { 
+      test: /\.css$/, 
+      loader: ExtractTextPlugin.extract(
+          {
+            fallbackLoader: "style-loader",
+            loader: "css-loader"
+          })
+    } 
     ]
-  },
-  devServer: {
-    hot: true,
-    contentBase:'./dist',
-    inline:true,
-  }
-};
+    },
+    devServer: {
+      hot: true,
+      contentBase:'.',
+      inline:true,
+    }
+  };
