@@ -1,6 +1,6 @@
 let initial_state = {
   title : 'Tour of Heroes',
-  selectedHero: {},  
+  selectedHero: undefined,  
   heroes: [
   { id: 11, name: 'Mr. Nice' },
   { id: 12, name: 'Narco' },
@@ -29,15 +29,36 @@ const hero = ( state = {}, action ) => {
   }
 };
 
+const heroes= (state = [], action) => {
+  switch (action.type) {
+    case 'UPDATE_HERO':
+      let _idx = state.findIndex((h)=> h.id == action.id);
+      return [
+        ...state.slice(0, _idx),
+        hero(state[_idx], action),
+        ...state.slice(_idx + 1)
+      ]; 
+    default:
+      return state;
+
+  }
+}
 
 const application = ( state = initial_state, action ) => {
   switch(action.type) {
+    case 'UPDATE_HERO':
+      action.id = state.selectedHero.id;
 
-    case 'UPDATE_HERO': 
       return { 
         ...state, 
-        hero: hero(hero,action) 
+        selectedHero: hero(state.selectedHero, action),
+         heroes: heroes(state.heroes, action) 
       };
+    case'SELECT_HERO' :
+      return{
+        ...state,
+        selectedHero: state.heroes.find((hero) => hero.id === action.id)
+      }
     default:
       return state;
   }
