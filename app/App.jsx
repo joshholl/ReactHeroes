@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateHero,selectHero } from '../actions'
+import HeroDetail from './HeroDetail.jsx';
 
 const App= ({title, selectedHero,heroes,  onTextChanged, onHeroClicked}) => {
-
-  console.log(heroes);
   let heroItems = heroes.map((h) => {
 
     let selectedClass = selectedHero !== undefined && h.id=== selectedHero.id ? 'selected' : '';
@@ -16,16 +15,6 @@ const App= ({title, selectedHero,heroes,  onTextChanged, onHeroClicked}) => {
         );
   });
 
-  let selectedHeroMarkUp= selectedHero !== undefined ? (()=> {return (<div>
-    <h2>{selectedHero.name} details!</h2>
-    <div><label>id: {selectedHero.id}</label></div>
-    <div>
-    <label>name: </label>
-
-    <input type="text" value={selectedHero.name} onChange={onTextChanged} />
-    </div>
-    </div> );})():'';
-
   
   return (  
       <div>
@@ -34,7 +23,7 @@ const App= ({title, selectedHero,heroes,  onTextChanged, onHeroClicked}) => {
       <ul className="heroes">
       {heroItems}
       </ul>
-        {selectedHeroMarkUp}
+      <HeroDetail hero={selectedHero} onTextChanged={onTextChanged} />
       </div>
       );
 };
