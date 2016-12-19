@@ -25,7 +25,8 @@ module.exports = {
       include: [
         path.resolve(__dirname, './app'),
         path.resolve(__dirname, './reducers'),
-        path.resolve(__dirname, './actions')
+        path.resolve(__dirname, './actions'),
+        path.resolve(__dirname, '.')
       ],
       exclude: /node_modules/,
       loader: 'babel-loader',
